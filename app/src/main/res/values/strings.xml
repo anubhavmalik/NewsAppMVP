@@ -3,4 +3,5 @@
     <string name="title_trending">Trending</string>
     <string name="title_all_news">News</string>
     <string name="title_preferences">Preferences</string>
+    <string name="trending_top_card_text">Show according to preferences</string>
 </resources>
