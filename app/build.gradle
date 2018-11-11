@@ -24,6 +24,7 @@ dependencies {
     def support_library_version = "28.0.0"
     def butterknife_version = "9.0.0-rc1"
     def retrofit_version = "2.4.0"
+    def glide_version = "4.8.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -59,5 +60,8 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
 
+    //Glide (Image Loading)
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
 }

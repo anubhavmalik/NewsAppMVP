@@ -1,6 +1,8 @@
 package com.anubhavmalikdeveloper.newsappmvp.Data.Models;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.gson.annotations.Expose;
@@ -9,6 +11,9 @@ import com.google.gson.annotations.SerializedName;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 public class Article {
+    @PrimaryKey(autoGenerate = true)
+    private Integer id;
+
     @SerializedName("source")
     @Expose
     private Source source;
