@@ -8,4 +8,34 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="PrimaryAppButtonStyleSemiBold">
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
+        <item name="android:textSize">@dimen/text_16</item>
+    </style>
+
+    <style name="SecondaryAppButtonStyleSemiBold">
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
+        <item name="android:textSize">@dimen/text_14</item>
+    </style>
+
+    <style name="TertiaryAppButtonStyleSemiBold">
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
+        <item name="android:textSize">@dimen/text_12</item>
+    </style>
+
+    <style name="PrimaryAppButtonStyleRegular">
+        <item name="android:fontFamily">@font/open_sans</item>
+        <item name="android:textSize">@dimen/text_16</item>
+    </style>
+
+    <style name="SecondaryAppButtonStyleRegular">
+        <item name="android:fontFamily">@font/open_sans</item>
+        <item name="android:textSize">@dimen/text_14</item>
+    </style>
+
+    <style name="TertiaryAppButtonStyleRegular">
+        <item name="android:fontFamily">@font/open_sans</item>
+        <item name="android:textSize">@dimen/text_12</item>
+    </style>
+
 </resources>
