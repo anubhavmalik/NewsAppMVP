@@ -9,14 +9,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SwitchCompat;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.anubhavmalikdeveloper.newsappmvp.Base.BaseFragment;
@@ -29,44 +28,38 @@ import com.anubhavmalikdeveloper.newsappmvp.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AllNewsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener
-        , CompoundButton.OnCheckedChangeListener
-        , AllNewsContract.View
+public class AllNewsFragment extends BaseFragment implements AllNewsContract.View
         , GeneralNewsInterface {
 
     @BindView(R.id.rv_main)
     RecyclerView rvMain;
 
-    @BindView(R.id.swipe_refresh_layout)
-    SwipeRefreshLayout swipeRefreshLayout;
-
-    @BindView(R.id.toggle_trending)
-    SwitchCompat toggleSwitch;
+    @BindView(R.id.search_view)
+    SearchView searchView;
 
     @BindView(R.id.lottie_view)
     LottieAnimationView lottieAnimationView;
 
     private Context mContext;
     private AllNewsPresenter presenter;
-    private boolean isAccordingToPreferences;
+    private String queryTerm = "";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frag_trending, null, false);
+        View view = inflater.inflate(R.layout.frag_all_news, null, false);
         ButterKnife.bind(this, view);
 
         initViewClicks();
         initDataHelpers();
 
-        presenter.loadData(isAccordingToPreferences, false, true);
+        searchView.setIconified(false);
+        showProgress(false);
         return view;
     }
 
     private void initDataHelpers() {
         ApiClient apiClient = ApiClient.getInstance();
-
-        //TODO: Init DB HELPER HERE TOO.
         initPresenter(apiClient.createService(ApiInterface.class));
     }
 
@@ -75,30 +68,30 @@ public class AllNewsFragment extends BaseFragment implements SwipeRefreshLayout.
     }
 
     private void initViewClicks() {
-        swipeRefreshLayout.setOnRefreshListener(this);
-        toggleSwitch.setOnCheckedChangeListener(this);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (s.isEmpty()) {
+                    queryTerm = s;
+                }
+                if (s.length() > 2) {
+                    queryTerm = s;
+                    presenter.loadData(true, true, true, s);
+                }
+                return true;
+            }
+        });
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-    }
-
-    @Override
-    public void onRefresh() {
-        presenter.loadData(isAccordingToPreferences, false, true);
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        isAccordingToPreferences = b;
-        presenter.loadData(isAccordingToPreferences, false, true);
-    }
-
-    @Override
-    public void setRefreshing(boolean refreshing) {
-        swipeRefreshLayout.setRefreshing(refreshing);
     }
 
     @Override
@@ -118,18 +111,17 @@ public class AllNewsFragment extends BaseFragment implements SwipeRefreshLayout.
     private void setAdapter(NewsModel newsModel) {
         AllNewsAdapter allNewsAdapter = new AllNewsAdapter(mContext, newsModel, this);
         rvMain.setAdapter(allNewsAdapter);
-        rvMain.setLayoutManager(new LinearLayoutManager(mContext));
+        rvMain.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
     }
 
     @Override
     public void showProgress(boolean status) {
         if (status) {
-            setRefreshing(false);
+            lottieAnimationView.setAnimation("newspaperAnimation.json");
             lottieAnimationView.setVisibility(View.VISIBLE);
             lottieAnimationView.playAnimation();
             lottieAnimationView.loop(true);
         } else {
-            setRefreshing(false);
             lottieAnimationView.setVisibility(View.GONE);
             lottieAnimationView.cancelAnimation();
         }
@@ -142,7 +134,11 @@ public class AllNewsFragment extends BaseFragment implements SwipeRefreshLayout.
 
     @Override
     public void showEmptyPlaceholder() {
-
+        rvMain.setVisibility(View.GONE);
+        lottieAnimationView.setAnimation("error.json");
+        lottieAnimationView.setVisibility(View.VISIBLE);
+        lottieAnimationView.playAnimation();
+        lottieAnimationView.loop(true);
     }
 
     @Override
@@ -152,6 +148,6 @@ public class AllNewsFragment extends BaseFragment implements SwipeRefreshLayout.
 
     @Override
     public void loadMore() {
-        presenter.loadData(isAccordingToPreferences, true, false);
+        presenter.loadData(true, true, false, queryTerm);
     }
 }

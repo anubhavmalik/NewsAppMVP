@@ -1,6 +1,7 @@
 package com.anubhavmalikdeveloper.newsappmvp.Network;
 
 import com.anubhavmalikdeveloper.newsappmvp.Data.Models.NewsModel;
+import com.anubhavmalikdeveloper.newsappmvp.Data.Models.SourceWrapper;
 
 import java.util.Map;
 
@@ -15,4 +16,8 @@ public interface ApiInterface {
     Call<NewsModel> getGeneralNewsByType(@Header("Authorization") String token
             , @Path("type") String type
             , @QueryMap Map<String, String> options);
+
+    @GET("/sources")
+    Call<SourceWrapper> getSources(@Header("Authorization") String token);
+    // apparently it doesn't work with country , @Query("country") String country); and returns html.
 }

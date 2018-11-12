@@ -3,6 +3,7 @@ package com.anubhavmalikdeveloper.newsappmvp.AllNews;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,72 +36,74 @@ public class AllNewsAdapter extends RecyclerView.Adapter<AllNewsAdapter.Trending
     @NonNull
     @Override
     public TrendingViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new TrendingViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_news, null, false));
+        return new TrendingViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_news, viewGroup, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull TrendingViewHolder trendingViewHolder, int i) {
         final Article article = articleArrayList.get(i);
 
-        if( i == articleArrayList.size() - 1){
-            if(newsModel.getTotalResults() > articleArrayList.size()) {
+        Log.d("TAGGGG", "adapter tak aya");
+        if (i == articleArrayList.size() - 1) {
+            if (newsModel.getTotalResults() > articleArrayList.size()) {
                 generalNewsInterface.loadMore();
-            }
-            else {
+            } else {
                 //do nothing
             }
         }
         if (article != null) {
             if (article.getTitle() != null) {
                 trendingViewHolder.tvTitle.setText(article.getTitle());
-            } else {
-                trendingViewHolder.tvTitle.setText("");
-            }
-            if (article.getAuthor() != null) {
-                trendingViewHolder.tvAuthor.setText(article.getAuthor());
-            } else {
-                trendingViewHolder.tvAuthor.setText("");
-            }
-            if (article.getUrlToImage() != null) {
-                Glide.with(mContext)
-                        .load(article.getUrlToImage())
-                        .into(trendingViewHolder.ivMain);
-            } else {
-                trendingViewHolder.ivMain.getLayoutParams().width = 1;
-                trendingViewHolder.ivMain.requestLayout();
-            }
-            if (article.getContent() != null) {
-                trendingViewHolder.tvDescription.setText(article.getContent());
-            } else {
-                trendingViewHolder.tvDescription.setVisibility(View.GONE);
-                trendingViewHolder.ivMain.setVisibility(View.GONE);
-            }
-            if (article.getPublishedAt() != null) {
-                trendingViewHolder.tvDate.setText(article.getPublishedAt());
-            } else {
-                trendingViewHolder.tvDate.setText("");
-            }
-            if (article.getSource() != null) {
-                if (article.getSource().getName() != null) {
-                    trendingViewHolder.tvSource.setText(article.getSource().getName());
+                if (article.getAuthor() != null) {
+                    trendingViewHolder.tvAuthor.setText(article.getAuthor());
+                } else {
+                    trendingViewHolder.tvAuthor.setText("");
+                }
+                if (article.getUrlToImage() != null) {
+                    Glide.with(mContext)
+                            .load(article.getUrlToImage())
+                            .into(trendingViewHolder.ivMain);
+                } else {
+                    trendingViewHolder.ivMain.getLayoutParams().width = 1;
+                    trendingViewHolder.ivMain.requestLayout();
+                }
+                if (article.getContent() != null) {
+                    trendingViewHolder.tvDescription.setText(article.getContent());
+                } else {
+                    trendingViewHolder.tvDescription.setVisibility(View.GONE);
+                    trendingViewHolder.ivMain.setVisibility(View.GONE);
+                }
+                if (article.getPublishedAt() != null) {
+                    trendingViewHolder.tvDate.setText(article.getPublishedAt());
+                } else {
+                    trendingViewHolder.tvDate.setText("");
+                }
+                if (article.getSource() != null) {
+                    if (article.getSource().getName() != null) {
+                        trendingViewHolder.tvSource.setText(article.getSource().getName());
+                    } else {
+                        trendingViewHolder.tvSource.setText("");
+                    }
                 } else {
                     trendingViewHolder.tvSource.setText("");
                 }
+                if (article.getUrl() != null) {
+                    trendingViewHolder.tvVisitNews.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            generalNewsInterface.redirectToNewsSource(article.getUrl());
+                        }
+                    });
+                } else {
+                    trendingViewHolder.tvVisitNews.setVisibility(View.INVISIBLE);
+                }
             } else {
-                trendingViewHolder.tvSource.setText("");
+                trendingViewHolder.itemView.setVisibility(View.GONE);
+                trendingViewHolder.itemView.getLayoutParams().height = 0;
+                trendingViewHolder.itemView.requestLayout();
             }
-            if (article.getUrl() != null) {
-                trendingViewHolder.tvVisitNews.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        generalNewsInterface.redirectToNewsSource(article.getUrl());
-                    }
-                });
-            } else {
-                trendingViewHolder.tvVisitNews.setVisibility(View.INVISIBLE);
-            }
-        }
-        else {
+
+        } else {
             trendingViewHolder.itemView.setVisibility(View.GONE);
         }
 
@@ -108,9 +111,9 @@ public class AllNewsAdapter extends RecyclerView.Adapter<AllNewsAdapter.Trending
 
     @Override
     public int getItemCount() {
+        Log.d("TAGGG", "size aya : " + articleArrayList.size());
         return articleArrayList.size();
     }
-
 
 
     static class TrendingViewHolder extends RecyclerView.ViewHolder {
