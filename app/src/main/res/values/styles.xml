@@ -38,4 +38,34 @@
         <item name="android:textSize">@dimen/text_12</item>
     </style>
 
+    <style name="PrimaryAppTextViewStyleSemiBold">
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
+        <item name="android:textSize">@dimen/text_16</item>
+    </style>
+
+    <style name="SecondaryAppTextViewStyleSemiBold">
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
+        <item name="android:textSize">@dimen/text_14</item>
+    </style>
+
+    <style name="TertiaryAppTextViewStyleSemiBold">
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
+        <item name="android:textSize">@dimen/text_12</item>
+    </style>
+
+    <style name="PrimaryAppTextViewStyleRegular">
+        <item name="android:fontFamily">@font/open_sans</item>
+        <item name="android:textSize">@dimen/text_16</item>
+    </style>
+
+    <style name="SecondaryAppTextViewStyleRegular">
+        <item name="android:fontFamily">@font/open_sans</item>
+        <item name="android:textSize">@dimen/text_14</item>
+    </style>
+
+    <style name="TertiaryAppTextViewStyleRegular">
+        <item name="android:fontFamily">@font/open_sans</item>
+        <item name="android:textSize">@dimen/text_12</item>
+    </style>
+
 </resources>

@@ -20,14 +20,22 @@ public class DatabaseHelper {
         gson = new Gson();
     }
 
-    public void addAllNewsListToDb(NewsModel newsModel) {
+    public void addAllNewsToDb(NewsModel newsModel){
+        tinyDb.putString(DatabaseConstants.allNews, gson.toJson(newsModel));
+    }
+
+    public void addTopNewsToDb(NewsModel newsModel){
+        tinyDb.putString(DatabaseConstants.topHeadlinesList, gson.toJson(newsModel));
+    }
+
+    public void addMoreAllNewsListToDb(NewsModel newsModel) {
         List<Article> articleArrayList = getAllNewsListFromDb();
         articleArrayList.addAll(newsModel.getArticles());
         newsModel.setArticles(articleArrayList);
         tinyDb.putString(DatabaseConstants.allNews, gson.toJson(newsModel));
     }
 
-    public void addTopNewsListToDb(NewsModel newsModel) {
+    public void addMoreTopNewsListToDb(NewsModel newsModel) {
         List<Article> articleArrayList = getTopNewsListFromDb();
         articleArrayList.addAll(newsModel.getArticles());
         newsModel.setArticles(articleArrayList);
@@ -38,16 +46,16 @@ public class DatabaseHelper {
         tinyDb.putString(DatabaseConstants.allNews, gson.toJson(sourceWrapper));
     }
 
-    public void addToSelectedSource(Source source) {
-        List<Source> sourceList = getAllSourcesFromDb();
-        if (sourceList.contains(source)) {
-            source.setFavorite(true);
-            sourceList.add(source);
-            tinyDb.putString(DatabaseConstants.selectedSources, gson.toJson(new SourceWrapper(sourceList)));
-        } else {
-            return;
-        }
-    }
+//    public void addToSelectedSource(Source source) {
+//        List<Source> sourceList = getAllSourcesFromDb();
+//        if (sourceList.contains(source)) {
+//            source.setFavorite(true);
+//            sourceList.add(source);
+//            tinyDb.putString(DatabaseConstants.selectedSources, gson.toJson(new SourceWrapper(sourceList)));
+//        } else {
+//            return;
+//        }
+//    }
 
     public List<Article> getAllNewsListFromDb() {
         if (tinyDb.getString(DatabaseConstants.allNews) != null && !tinyDb.getString(DatabaseConstants.allNews).isEmpty()) {

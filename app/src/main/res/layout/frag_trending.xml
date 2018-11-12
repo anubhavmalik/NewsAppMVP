@@ -13,7 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_main"
+            android:id="@+id/rv_main_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

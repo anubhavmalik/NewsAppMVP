@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.anubhavmalikdeveloper.newsappmvp.R;
 import com.anubhavmalikdeveloper.newsappmvp.AllNews.AllNewsFragment;
+import com.anubhavmalikdeveloper.newsappmvp.TopNews.TopNewsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,9 +21,10 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_trending:
-                    selectFragment(new AllNewsFragment());
+                    selectFragment(new TopNewsFragment());
                     return true;
                 case R.id.navigation_all_news:
+                    selectFragment(new AllNewsFragment());
                     return true;
                 case R.id.navigation_preferred_sources:
                     return true;
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        selectFragment(new AllNewsFragment());
+        selectFragment(new TopNewsFragment());
     }
 
     private void selectFragment(Fragment fragment){
