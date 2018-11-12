@@ -32,14 +32,14 @@ public class DatabaseHelper {
         List<Article> articleArrayList = getAllNewsListFromDb();
         articleArrayList.addAll(newsModel.getArticles());
         newsModel.setArticles(articleArrayList);
-        tinyDb.putString(DatabaseConstants.allNews, gson.toJson(newsModel));
+        tinyDb.putString(DatabaseConstants.topHeadlinesList, gson.toJson(newsModel));
     }
 
     public void addMoreTopNewsListToDb(NewsModel newsModel) {
         List<Article> articleArrayList = getTopNewsListFromDb();
         articleArrayList.addAll(newsModel.getArticles());
         newsModel.setArticles(articleArrayList);
-        tinyDb.putString(DatabaseConstants.allNews, gson.toJson(newsModel));
+        tinyDb.putString(DatabaseConstants.topHeadlinesList, gson.toJson(newsModel));
     }
 
     public void addAllSourceListToDb(SourceWrapper sourceWrapper) {
@@ -82,7 +82,7 @@ public class DatabaseHelper {
     }
 
     public String getSelectedCountry() {
-        return "in";
+        return tinyDb.getString(DatabaseConstants.userCountry);
         //TODO: IDHAR IMPLEMENT ACCORDING TO SELECTION
     }
 

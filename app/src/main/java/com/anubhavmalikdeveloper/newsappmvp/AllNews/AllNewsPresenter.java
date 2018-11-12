@@ -1,5 +1,6 @@
 package com.anubhavmalikdeveloper.newsappmvp.AllNews;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 
@@ -31,7 +32,6 @@ public class AllNewsPresenter implements AllNewsContract.Presenter {
     public void loadData(boolean isAccordingToPreferences, final boolean isNewPageNeeded, boolean resetPageNumber, String queryString) {
         if (view.isNetworkAvailable()) {
 
-            Log.d("TAGGG", "net available");
             view.showProgress(true);
             if (resetPageNumber) {
                 pageNumber = 1;
@@ -58,7 +58,7 @@ public class AllNewsPresenter implements AllNewsContract.Presenter {
                             , map)
                     .enqueue(new Callback<NewsModel>() {
                         @Override
-                        public void onResponse(Call<NewsModel> call, Response<NewsModel> response) {
+                        public void onResponse(@NonNull Call<NewsModel> call, @NonNull Response<NewsModel> response) {
                             if (response.isSuccessful()) {
                                 view.showProgress(false);
                                 if (response.body() != null) {
@@ -80,7 +80,7 @@ public class AllNewsPresenter implements AllNewsContract.Presenter {
                         }
 
                         @Override
-                        public void onFailure(Call<NewsModel> call, Throwable t) {
+                        public void onFailure(@NonNull Call<NewsModel> call, @NonNull Throwable t) {
                             view.showProgress(false);
                             view.showSnackBar(ApiConstants.API_FAIL_MESSAGE, Snackbar.LENGTH_SHORT);
                             t.printStackTrace();

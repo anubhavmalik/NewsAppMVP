@@ -1,6 +1,8 @@
 package com.anubhavmalikdeveloper.newsappmvp.TopNews;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 
 import com.anubhavmalikdeveloper.newsappmvp.AppUtils.ApiConstants;
 import com.anubhavmalikdeveloper.newsappmvp.Data.DatabaseHelper;
@@ -46,23 +48,27 @@ public class TopNewsPresenter implements TopNewsContract.Presenter {
             if (isAccordingToPreferences) {
                 map.put(ApiConstants.SELECTED_SOURCES, databaseHelper.getSelectedSourcesString());
             } else {
-                // since both of them can't work together in the api call (mentioned in documentation)
+//                 since both of them can't work together in the api call (mentioned in documentation)
                 map.put(ApiConstants.API_COUNTRY, databaseHelper.getSelectedCountry());
             }
+
             apiInterface
                     .getGeneralNewsByType(ApiConstants.API_KEY
                             , ApiConstants.API_TOP_HEADLINES
                             , map)
                     .enqueue(new Callback<NewsModel>() {
                         @Override
-                        public void onResponse(Call<NewsModel> call, Response<NewsModel> response) {
+                        public void onResponse(@NonNull Call<NewsModel> call, @NonNull Response<NewsModel> response) {
                             if (response.isSuccessful()) {
                                 view.showProgress(false);
                                 if (response.body() != null) {
                                     if (response.body().getStatus().equalsIgnoreCase(ApiConstants.API_STATUS_OK)) {
+//                                        Log.d("TAGG", "response mein size aya : " + response.body().getArticles().size());
                                         if (!isNewPageNeeded) {
                                             databaseHelper.addMoreTopNewsListToDb(response.body());
+                                            Log.d("TAGG", "response mien size aya : " + response.body().getArticles().size());
                                             response.body().setArticles(databaseHelper.getTopNewsListFromDb());
+                                            Log.d("TAGG", "response mien size aya 2 : " + response.body().getArticles().size());
                                         } else {
                                             databaseHelper.addTopNewsToDb(response.body());
                                         }
@@ -77,7 +83,7 @@ public class TopNewsPresenter implements TopNewsContract.Presenter {
                         }
 
                         @Override
-                        public void onFailure(Call<NewsModel> call, Throwable t) {
+                        public void onFailure(@NonNull Call<NewsModel> call, @NonNull Throwable t) {
                             view.showProgress(false);
                             view.showSnackBar(ApiConstants.API_FAIL_MESSAGE, Snackbar.LENGTH_SHORT);
                             t.printStackTrace();

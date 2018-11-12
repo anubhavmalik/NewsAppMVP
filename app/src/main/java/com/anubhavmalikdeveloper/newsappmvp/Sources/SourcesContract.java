@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.anubhavmalikdeveloper.newsappmvp.Base.BasePresenter;
 import com.anubhavmalikdeveloper.newsappmvp.Base.BaseView;
-import com.anubhavmalikdeveloper.newsappmvp.Data.Models.Article;
 import com.anubhavmalikdeveloper.newsappmvp.Data.Models.Source;
 
 import java.util.List;
@@ -19,7 +18,5 @@ public interface SourcesContract {
 
     interface Presenter extends BasePresenter {
         void loadData(boolean isAccordingToPreferences, boolean isNewPageNeeded);
-
-        void getPreferences();
-    }
+        }
 }

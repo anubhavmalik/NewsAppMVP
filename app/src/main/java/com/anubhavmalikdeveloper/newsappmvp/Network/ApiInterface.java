@@ -9,7 +9,6 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 public interface ApiInterface {
@@ -19,7 +18,6 @@ public interface ApiInterface {
             , @QueryMap Map<String, String> options);
 
     @GET("/sources")
-    Call<SourceWrapper> getSources(@Header("Authorization") String token
-            , @Path("type") String type
-            , @Query("country") String country);
+    Call<SourceWrapper> getSources(@Header("Authorization") String token);
+    // apparently it doesn't work with country , @Query("country") String country); and returns html.
 }

@@ -7,13 +7,14 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/size_40"
         app:layout_constraintTop_toBottomOf="@id/cv_pref"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_main_top"
+            android:id="@+id/rv_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

@@ -2,6 +2,8 @@ package com.anubhavmalikdeveloper.newsappmvp.Sources;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +18,8 @@ import android.widget.TextView;
 import com.anubhavmalikdeveloper.newsappmvp.Base.BaseFragment;
 import com.anubhavmalikdeveloper.newsappmvp.Callbacks.SourceInterface;
 import com.anubhavmalikdeveloper.newsappmvp.CountrySelection.CountrySelectionActivity;
+import com.anubhavmalikdeveloper.newsappmvp.Data.DatabaseHelper;
+import com.anubhavmalikdeveloper.newsappmvp.Data.Models.Country;
 import com.anubhavmalikdeveloper.newsappmvp.Data.Models.Source;
 import com.anubhavmalikdeveloper.newsappmvp.Data.Models.SourceWrapper;
 import com.anubhavmalikdeveloper.newsappmvp.Network.ApiClient;
@@ -50,12 +54,12 @@ public class SourcesFragment extends BaseFragment implements SourcesContract.Vie
         initViewClicks();
         initDataHelpers();
 
+        presenter.loadData(true, true);
         return v;
     }
 
     private void initDataHelpers() {
         ApiClient apiClient = ApiClient.getInstance();
-
         initPresenter(apiClient.createService(ApiInterface.class));
     }
 
@@ -75,14 +79,18 @@ public class SourcesFragment extends BaseFragment implements SourcesContract.Vie
 
     @Override
     public boolean isNetworkAvailable() {
-        return false;
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager != null ? connectivityManager.getActiveNetworkInfo() : null;
+
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     @Override
     public void showData(@NonNull List<Source> sources) {
         SourcesAdapter sourcesAdapter = new SourcesAdapter(mContext, sources, this);
         rvMain.setAdapter(sourcesAdapter);
-        rvMain.setLayoutManager(new LinearLayoutManager(mContext));
+        rvMain.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
     }
 
     @Override
@@ -109,5 +117,11 @@ public class SourcesFragment extends BaseFragment implements SourcesContract.Vie
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        tvCountry.setText(Country.getCountryNameByCode((new DatabaseHelper()).getSelectedCountry()));
     }
 }

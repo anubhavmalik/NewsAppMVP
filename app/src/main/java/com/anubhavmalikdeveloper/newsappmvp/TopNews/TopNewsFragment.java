@@ -22,10 +22,13 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.anubhavmalikdeveloper.newsappmvp.AllNews.AllNewsAdapter;
 import com.anubhavmalikdeveloper.newsappmvp.Base.BaseFragment;
 import com.anubhavmalikdeveloper.newsappmvp.Callbacks.GeneralNewsInterface;
+import com.anubhavmalikdeveloper.newsappmvp.Data.Models.Article;
 import com.anubhavmalikdeveloper.newsappmvp.Data.Models.NewsModel;
 import com.anubhavmalikdeveloper.newsappmvp.Network.ApiClient;
 import com.anubhavmalikdeveloper.newsappmvp.Network.ApiInterface;
 import com.anubhavmalikdeveloper.newsappmvp.R;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +38,7 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
         , TopNewsContract.View
         , GeneralNewsInterface {
 
-    @BindView(R.id.rv_main_top)
+    @BindView(R.id.rv_main)
     RecyclerView rvMain;
 
     @BindView(R.id.swipe_refresh_layout)
@@ -60,14 +63,24 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
         initViewClicks();
         initDataHelpers();
 
+        setAdapter(provideEmptyNewsModel());
+
         presenter.loadData(isAccordingToPreferences, false, true);
+
         return view;
+    }
+
+    private NewsModel provideEmptyNewsModel() {
+        NewsModel newsModel = new NewsModel();
+        newsModel.setTotalResults(0);
+        newsModel.setArticles(new ArrayList<Article>());
+        newsModel.setStatus("ok");
+
+        return newsModel;
     }
 
     private void initDataHelpers() {
         ApiClient apiClient = ApiClient.getInstance();
-
-        //TODO: Init DB HELPER HERE TOO.
         initPresenter(apiClient.createService(ApiInterface.class));
     }
 
@@ -94,6 +107,7 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         isAccordingToPreferences = b;
+        setAdapter(provideEmptyNewsModel());
         presenter.loadData(isAccordingToPreferences, false, true);
     }
 
@@ -120,14 +134,14 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
     private void setAdapter(NewsModel newsModel) {
         AllNewsAdapter allNewsAdapter = new AllNewsAdapter(mContext, newsModel, this);
         rvMain.setAdapter(allNewsAdapter);
-        rvMain.setLayoutManager(new LinearLayoutManager(mContext));
+        rvMain.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
     }
 
     @Override
     public void showProgress(boolean status) {
         if (status) {
             setRefreshing(false);
-            lottieAnimationView.setAnimation("newsAnimation.json");
+            lottieAnimationView.setAnimation("newspaperAnimation.json");
             lottieAnimationView.setVisibility(View.VISIBLE);
             lottieAnimationView.playAnimation();
             lottieAnimationView.loop(true);

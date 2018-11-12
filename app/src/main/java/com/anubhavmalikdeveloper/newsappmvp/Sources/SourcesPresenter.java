@@ -1,6 +1,7 @@
 package com.anubhavmalikdeveloper.newsappmvp.Sources;
 
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 
 import com.anubhavmalikdeveloper.newsappmvp.AppUtils.ApiConstants;
 import com.anubhavmalikdeveloper.newsappmvp.Callbacks.SourceInterface;
@@ -29,9 +30,10 @@ public class SourcesPresenter implements SourcesContract.Presenter, SourceInterf
 
         if (databaseHelper.getAllSourcesFromDb() != null && !databaseHelper.getAllSourcesFromDb().isEmpty()) {
             view.showData(databaseHelper.getAllSourcesFromDb());
+
         } else {
             if (view.isNetworkAvailable()) {
-                apiInterface.getSources(ApiConstants.API_KEY, ApiConstants.SELECTED_SOURCES, databaseHelper.getSelectedCountry())
+                apiInterface.getSources(ApiConstants.API_KEY)
                         .enqueue(new Callback<SourceWrapper>() {
                             @Override
                             public void onResponse(Call<SourceWrapper> call, Response<SourceWrapper> response) {
@@ -40,6 +42,7 @@ public class SourcesPresenter implements SourcesContract.Presenter, SourceInterf
                                         databaseHelper.addAllSourceListToDb(response.body());
                                     }
                                 }
+                                view.showData(response.body().getSourceList());
                             }
 
                             @Override
@@ -49,11 +52,6 @@ public class SourcesPresenter implements SourcesContract.Presenter, SourceInterf
                         });
             }
         }
-    }
-
-    @Override
-    public void getPreferences() {
-
     }
 
     @Override

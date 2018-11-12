@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.anubhavmalikdeveloper.newsappmvp.R;
 import com.anubhavmalikdeveloper.newsappmvp.AllNews.AllNewsFragment;
+import com.anubhavmalikdeveloper.newsappmvp.Sources.SourcesFragment;
 import com.anubhavmalikdeveloper.newsappmvp.TopNews.TopNewsFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
                     selectFragment(new AllNewsFragment());
                     return true;
                 case R.id.navigation_preferred_sources:
+                    selectFragment(new SourcesFragment());
                     return true;
             }
             return false;

@@ -31,7 +31,7 @@ public class SourcesAdapter extends RecyclerView.Adapter<SourcesAdapter.SourceVi
     @NonNull
     @Override
     public SourceViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new SourceViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_source, null, false));
+        return new SourceViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_source, viewGroup, false));
     }
 
     @Override

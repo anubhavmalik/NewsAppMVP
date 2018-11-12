@@ -15,6 +15,7 @@ import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.anubhavmalikdeveloper.newsappmvp.Base.BaseFragment;
@@ -59,8 +60,6 @@ public class AllNewsFragment extends BaseFragment implements AllNewsContract.Vie
 
     private void initDataHelpers() {
         ApiClient apiClient = ApiClient.getInstance();
-
-        //TODO: Init DB HELPER HERE TOO.
         initPresenter(apiClient.createService(ApiInterface.class));
     }
 
@@ -112,13 +111,13 @@ public class AllNewsFragment extends BaseFragment implements AllNewsContract.Vie
     private void setAdapter(NewsModel newsModel) {
         AllNewsAdapter allNewsAdapter = new AllNewsAdapter(mContext, newsModel, this);
         rvMain.setAdapter(allNewsAdapter);
-        rvMain.setLayoutManager(new LinearLayoutManager(mContext));
+        rvMain.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
     }
 
     @Override
     public void showProgress(boolean status) {
         if (status) {
-            lottieAnimationView.setAnimation("newsAnimation.json");
+            lottieAnimationView.setAnimation("newspaperAnimation.json");
             lottieAnimationView.setVisibility(View.VISIBLE);
             lottieAnimationView.playAnimation();
             lottieAnimationView.loop(true);

@@ -36,7 +36,7 @@ public class AllNewsAdapter extends RecyclerView.Adapter<AllNewsAdapter.Trending
     @NonNull
     @Override
     public TrendingViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new TrendingViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_news, null, false));
+        return new TrendingViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_news, viewGroup, false));
     }
 
     @Override
@@ -111,6 +111,7 @@ public class AllNewsAdapter extends RecyclerView.Adapter<AllNewsAdapter.Trending
 
     @Override
     public int getItemCount() {
+        Log.d("TAGGG", "size aya : " + articleArrayList.size());
         return articleArrayList.size();
     }
 
