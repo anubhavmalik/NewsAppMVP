@@ -8,7 +8,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-@Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NewsModel {
     @SerializedName("status")

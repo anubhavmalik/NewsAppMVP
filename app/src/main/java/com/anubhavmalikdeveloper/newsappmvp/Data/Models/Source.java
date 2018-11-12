@@ -1,13 +1,10 @@
 package com.anubhavmalikdeveloper.newsappmvp.Data.Models;
 
-import android.arch.persistence.room.Entity;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Entity
 public class Source {
     @SerializedName("id")
     @Expose
@@ -15,6 +12,16 @@ public class Source {
     @SerializedName("name")
     @Expose
     private String name;
+
+    private boolean isFavorite;
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
 
     public String getId() {
         return id;

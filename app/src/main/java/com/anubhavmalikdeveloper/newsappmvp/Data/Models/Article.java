@@ -1,6 +1,5 @@
 package com.anubhavmalikdeveloper.newsappmvp.Data.Models;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
@@ -9,11 +8,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Entity
 public class Article {
-    @PrimaryKey(autoGenerate = true)
-    private Integer id;
-
     @SerializedName("source")
     @Expose
     private Source source;
@@ -88,6 +83,14 @@ public class Article {
     }
 
     public String getPublishedAt() {
+        if(publishedAt!=null){
+            if(publishedAt.contains("T")){
+                setPublishedAt(publishedAt.substring(0, publishedAt.indexOf("T")));
+            }
+            else {
+                return publishedAt;
+            }
+        }
         return publishedAt;
     }
 
@@ -96,10 +99,19 @@ public class Article {
     }
 
     public String getContent() {
+        if (content != null) {
+            if (content.contains("[")) {
+                setContent(content.substring(0, content.indexOf("[") - 1));
+            }
+            else {
+                return content;
+            }
+        }
         return content;
     }
 
     public void setContent(String content) {
+
         this.content = content;
     }
 }

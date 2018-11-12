@@ -1,5 +1,6 @@
 package com.anubhavmalikdeveloper.newsappmvp.Callbacks;
 
-public interface VisitNewsInterface {
+public interface GeneralNewsInterface {
     void redirectToNewsSource(String url);
+    void loadMore();
 }

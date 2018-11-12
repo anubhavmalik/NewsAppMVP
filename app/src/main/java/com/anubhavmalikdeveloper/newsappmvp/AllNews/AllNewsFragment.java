@@ -1,11 +1,14 @@
-package com.anubhavmalikdeveloper.newsappmvp.Trending;
+package com.anubhavmalikdeveloper.newsappmvp.AllNews;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,22 +17,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.anubhavmalikdeveloper.newsappmvp.Base.BaseFragment;
-import com.anubhavmalikdeveloper.newsappmvp.Callbacks.VisitNewsInterface;
-import com.anubhavmalikdeveloper.newsappmvp.Data.Models.Article;
+import com.anubhavmalikdeveloper.newsappmvp.Callbacks.GeneralNewsInterface;
+import com.anubhavmalikdeveloper.newsappmvp.Data.Models.NewsModel;
 import com.anubhavmalikdeveloper.newsappmvp.Network.ApiClient;
 import com.anubhavmalikdeveloper.newsappmvp.Network.ApiInterface;
 import com.anubhavmalikdeveloper.newsappmvp.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TrendingFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, CompoundButton.OnCheckedChangeListener, TrendingContract.View, VisitNewsInterface {
+public class AllNewsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener
+        , CompoundButton.OnCheckedChangeListener
+        , AllNewsContract.View
+        , GeneralNewsInterface {
+
     @BindView(R.id.rv_main)
     RecyclerView rvMain;
 
@@ -39,10 +43,12 @@ public class TrendingFragment extends BaseFragment implements SwipeRefreshLayout
     @BindView(R.id.toggle_trending)
     SwitchCompat toggleSwitch;
 
+    @BindView(R.id.lottie_view)
+    LottieAnimationView lottieAnimationView;
+
     private Context mContext;
-    private TrendingPresenter presenter;
+    private AllNewsPresenter presenter;
     private boolean isAccordingToPreferences;
-    private ArrayList<Article> articleArrayList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -53,6 +59,7 @@ public class TrendingFragment extends BaseFragment implements SwipeRefreshLayout
         initViewClicks();
         initDataHelpers();
 
+        presenter.loadData(isAccordingToPreferences, false, true);
         return view;
     }
 
@@ -64,7 +71,7 @@ public class TrendingFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
     private void initPresenter(ApiInterface apiInterface) {
-        presenter = new TrendingPresenter(this, apiInterface);
+        presenter = new AllNewsPresenter(this, apiInterface);
     }
 
     private void initViewClicks() {
@@ -80,12 +87,13 @@ public class TrendingFragment extends BaseFragment implements SwipeRefreshLayout
 
     @Override
     public void onRefresh() {
-        presenter.loadData(isAccordingToPreferences);
+        presenter.loadData(isAccordingToPreferences, false, true);
     }
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         isAccordingToPreferences = b;
+        presenter.loadData(isAccordingToPreferences, false, true);
     }
 
     @Override
@@ -103,29 +111,33 @@ public class TrendingFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
     @Override
-    public boolean isActive() {
-        return false;
+    public void showData(@NonNull NewsModel newsModel) {
+        setAdapter(newsModel);
     }
 
-    @Override
-    public void showData(@NonNull List<Article> articleList) {
-        setAdapter();
-    }
-
-    private void setAdapter() {
-        TrendingAdapter trendingAdapter = new TrendingAdapter(mContext, articleArrayList, this);
-        rvMain.setAdapter(trendingAdapter);
+    private void setAdapter(NewsModel newsModel) {
+        AllNewsAdapter allNewsAdapter = new AllNewsAdapter(mContext, newsModel, this);
+        rvMain.setAdapter(allNewsAdapter);
         rvMain.setLayoutManager(new LinearLayoutManager(mContext));
     }
 
     @Override
     public void showProgress(boolean status) {
-
+        if (status) {
+            setRefreshing(false);
+            lottieAnimationView.setVisibility(View.VISIBLE);
+            lottieAnimationView.playAnimation();
+            lottieAnimationView.loop(true);
+        } else {
+            setRefreshing(false);
+            lottieAnimationView.setVisibility(View.GONE);
+            lottieAnimationView.cancelAnimation();
+        }
     }
 
     @Override
     public void showSnackBar(String message, int duration) {
-
+        Snackbar.make(rvMain, message, duration).show();
     }
 
     @Override
@@ -135,6 +147,11 @@ public class TrendingFragment extends BaseFragment implements SwipeRefreshLayout
 
     @Override
     public void redirectToNewsSource(String url) {
-        //TODO: open the web-page with the given url
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+
+    @Override
+    public void loadMore() {
+        presenter.loadData(isAccordingToPreferences, true, false);
     }
 }

@@ -1,4 +1,4 @@
-package com.anubhavmalikdeveloper.newsappmvp.Trending;
+package com.anubhavmalikdeveloper.newsappmvp.Sources;
 
 import android.support.annotation.NonNull;
 
@@ -8,20 +8,18 @@ import com.anubhavmalikdeveloper.newsappmvp.Data.Models.Article;
 
 import java.util.List;
 
-public interface TrendingContract {
+public interface SourcesContract {
     interface View extends BaseView {
 
         void setRefreshing(boolean refreshing);
 
         boolean isNetworkAvailable();
 
-        boolean isActive();
-
         void showData(@NonNull List<Article> articleList);
     }
 
     interface Presenter extends BasePresenter {
-        void loadData(boolean isAccordingToPreferences);
+        void loadData(boolean isAccordingToPreferences, boolean isNewPageNeeded);
 
         void getPreferences();
     }

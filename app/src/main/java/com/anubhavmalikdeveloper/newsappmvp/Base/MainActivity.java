@@ -3,10 +3,12 @@ package com.anubhavmalikdeveloper.newsappmvp.Base;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.anubhavmalikdeveloper.newsappmvp.R;
+import com.anubhavmalikdeveloper.newsappmvp.AllNews.AllNewsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_trending:
+                    selectFragment(new AllNewsFragment());
                     return true;
                 case R.id.navigation_all_news:
                     return true;
@@ -35,6 +38,15 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        selectFragment(new AllNewsFragment());
+    }
+
+    private void selectFragment(Fragment fragment){
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit();
     }
 
 }

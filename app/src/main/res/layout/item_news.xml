@@ -14,9 +14,9 @@
 
         <TextView
             android:id="@+id/tv_title"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
+            android:minLines="1"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_margin="@dimen/margin_4"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -24,26 +24,31 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="0"/>
 
-        <ImageView
-            android:id="@+id/iv_main"
-            android:layout_width="@dimen/size_80"
-            android:layout_height="@dimen/size_80"
-            android:layout_margin="@dimen/margin_4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_title"/>
-
-        <TextView
-            android:id="@+id/tv_description"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/margin_4"
-            android:layout_marginStart="@dimen/margin_4"
-            android:layout_marginEnd="@dimen/margin_4"
-            app:layout_constraintHeight_min="@dimen/size_80"
+        <LinearLayout
+            android:id="@+id/lrContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
-            app:layout_constraintStart_toEndOf="@id/iv_main"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/iv_main"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_main"
+                android:layout_width="@dimen/size_80"
+                android:layout_height="@dimen/size_80"
+                android:layout_margin="@dimen/margin_4"
+                />
+
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_4"
+                android:layout_marginStart="@dimen/margin_4"
+                android:layout_marginEnd="@dimen/margin_4" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_author"
@@ -51,8 +56,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_4"
             android:layout_marginTop="@dimen/margin_4"
-            app:layout_constraintTop_toBottomOf="@id/tv_description"
-            app:layout_constraintEnd_toEndOf="@id/tv_description"
+            app:layout_constraintTop_toBottomOf="@id/lrContainer"
+            app:layout_constraintEnd_toEndOf="@id/lrContainer"
             android:maxLines="1"/>
 
         <TextView
@@ -61,8 +66,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_4"
             android:layout_marginStart="@dimen/margin_4"
-            app:layout_constraintTop_toBottomOf="@id/tv_description"
-            app:layout_constraintStart_toStartOf="@id/tv_description"
+            app:layout_constraintTop_toBottomOf="@id/lrContainer"
+            app:layout_constraintStart_toStartOf="parent"
             android:textColor="@color/colorPrimary"/>
 
         <TextView
